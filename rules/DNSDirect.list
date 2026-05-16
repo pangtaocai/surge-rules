@@ -1,0 +1,5 @@
+# NAME: DNSDirect
+# DESCRIPTION: Domestic encrypted DNS endpoints that should connect directly.
+
+DOMAIN,dns.alidns.com
+DOMAIN,doh.pub

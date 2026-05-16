@@ -1,0 +1,8 @@
+# NAME: DomesticCustom
+# DESCRIPTION: User-defined domestic services that should connect directly.
+
+DOMAIN,passenger.t3go.cn
+DOMAIN,wxh.wo.cn
+DOMAIN-SUFFIX,ccb.com
+DOMAIN-SUFFIX,abcchina.com
+DOMAIN-SUFFIX,abcchina.com.cn
