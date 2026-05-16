@@ -5,16 +5,14 @@ Personal Surge rules and profile.
 ## Files
 
 - `Surge.conf`: Main Surge profile for macOS and iOS.
-- `rule/DNSDirect.list`: Domestic encrypted DNS endpoints routed directly.
-- `rule/DNSProxy.list`: Overseas encrypted DNS endpoints and encrypted DNS protocols routed by proxy.
+- `rule/DNSDirect.list`: Optional domestic encrypted DNS endpoints.
+- `rule/DNSProxy.list`: Optional overseas encrypted DNS endpoints and encrypted DNS protocols.
 - `rule/DomesticCustom.list`: Custom domestic services routed directly.
 - `icon/*.png`: Policy group icon assets.
 
 ## Raw URLs
 
 ```conf
-RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/DNSDirect.list,DIRECT
-RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/DNSProxy.list,节点选择
 RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/DomesticCustom.list,DIRECT
 ```
 
