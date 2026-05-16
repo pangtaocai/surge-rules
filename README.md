@@ -8,7 +8,7 @@ Personal Surge rules and profile.
 - `rule/DNSDirect.list`: Domestic encrypted DNS endpoints routed directly.
 - `rule/DNSProxy.list`: Overseas encrypted DNS endpoints and encrypted DNS protocols routed by proxy.
 - `rule/DomesticCustom.list`: Custom domestic services routed directly.
-- `icon/*.png`: Policy group icons referenced by `icon-url`.
+- `icon/*.png`: Policy group icon assets.
 
 ## Raw URLs
 
