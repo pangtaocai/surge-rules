@@ -12,7 +12,7 @@ Personal Surge rules and profile.
 ## Raw URLs
 
 ```conf
-RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/refs/heads/master/rule/DNSDirect.list,直连
-RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/refs/heads/master/rule/DNSProxy.list,节点选择
-RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/refs/heads/master/rule/DomesticCustom.list,直连
+RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/DNSDirect.list,直连
+RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/DNSProxy.list,节点选择
+RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/DomesticCustom.list,直连
 ```
