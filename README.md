@@ -22,6 +22,8 @@ RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/Do
 https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/traffic.sgmodule
 ```
 
+Module arguments follow Surge's `KEY:Description` format. Encode the airport subscription URL before filling `URL`.
+
 ## Icon Sources
 
 - Brand icons: [Dashboard Icons](https://github.com/homarr-labs/dashboard-icons)

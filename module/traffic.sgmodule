@@ -1,6 +1,8 @@
 #!name=Traffic Monitor
-#!desc=Manual airport subscription traffic monitor for Surge iOS. Fill in SUB_URL locally after importing.
-#!arguments=NAME=Airport&SUB_URL=SUBSCRIPTION_URL&WARN=80&EXPIRE=7
+#!desc=Manual airport subscription traffic monitor for Surge iOS.
+#!category=Traffic Monitor
+#!arguments=NAME:机场名字,URL:编码后的机场订阅,WARN:流量告警百分比,EXPIRE:到期提醒天数
+#!arguments-desc=[参数设置]\n\n⓵ NAME: 机场名称，例如 MyAirport。\n\n⓶ URL: 编码后的机场订阅地址。请先对订阅 URL 做 URL Encode，避免 token 里的特殊字符影响模块参数解析。\n\n⓷ WARN: 流量使用百分比告警阈值，例如 80。\n\n⓸ EXPIRE: 到期提醒天数，例如 7。
 
 [Script]
-traffic = type=generic,timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/traffic.js,script-update-interval=86400,argument=name=%NAME%;url=%SUB_URL%;warn=%WARN%;expire=%EXPIRE%
+traffic=type=generic,timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/traffic.js,script-update-interval=86400,argument=name={{{NAME}}};url={{{URL}}};warn={{{WARN}}};expire={{{EXPIRE}}}
