@@ -1,6 +1,9 @@
 /*
  * Surge airport traffic monitor.
  *
+ * Surge iOS script example:
+ * 机场流量监控 = type=cron,cronexp="0 9 * * *",timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/airport-traffic-monitor.js,script-update-interval=86400,argument=name=MyAirport;url=https://example.com/sub?token=xxx;warn=80;expire=7
+ *
  * Recommended argument format:
  * name=MyAirport;url=https://example.com/sub?token=xxx;warn=80;expire=7;policy=DIRECT
  *
@@ -12,6 +15,9 @@
  * - warn: traffic usage warning percent, default 80
  * - expire: expiration warning days, default 7
  * - policy: policy used for the HTTP request, default empty
+ *
+ * This script does not post notifications. It stores the latest result in
+ * $persistentStore and prints a summary to the Surge script log.
  */
 
 const DEFAULTS = {
@@ -148,8 +154,8 @@ function saveCurrent(key, data) {
   } catch (_) {}
 }
 
-function post(title, subtitle, body) {
-  $notification.post(title, subtitle, body, { "auto-dismiss": false });
+function log(message) {
+  console.log(`[AirportTraffic] ${message}`);
 }
 
 const args = parseArgument(typeof $argument === "string" ? $argument : "");
@@ -160,11 +166,7 @@ const expireWarnDays = Number(args.expire || DEFAULTS.expire);
 const policy = decodeValue(args.policy || "");
 
 if (!url || !/^https?:\/\//i.test(url)) {
-  post(
-    "机场流量监控配置错误",
-    name,
-    "请在 argument 里填写 url，例如：name=我的机场;url=https://example.com/sub;warn=80;expire=7"
-  );
+  log(`${name} 配置错误：请在 argument 里填写 url，例如 name=我的机场;url=https://example.com/sub;warn=80;expire=7`);
   finish();
 } else {
   const request = {
@@ -180,7 +182,7 @@ if (!url || !/^https?:\/\//i.test(url)) {
 
   $httpClient.get(request, (error, response) => {
     if (error) {
-      post("机场流量获取失败", name, String(error));
+      log(`${name} 获取失败：${String(error)}`);
       finish();
       return;
     }
@@ -190,11 +192,7 @@ if (!url || !/^https?:\/\//i.test(url)) {
     const userInfo = headers["subscription-userinfo"];
 
     if (!userInfo) {
-      post(
-        "机场流量获取失败",
-        name,
-        `订阅响应没有 subscription-userinfo 头。HTTP 状态：${status || "Unknown"}`
-      );
+      log(`${name} 获取失败：订阅响应没有 subscription-userinfo 头。HTTP 状态：${status || "Unknown"}`);
       finish();
       return;
     }
@@ -206,10 +204,9 @@ if (!url || !/^https?:\/\//i.test(url)) {
     const expireDays = daysUntil(data.expire);
     const isTrafficWarning = data.total > 0 && data.percent >= warnPercent;
     const isExpireWarning = expireDays !== null && expireDays <= expireWarnDays;
-    const title = isTrafficWarning || isExpireWarning ? "机场流量告警" : "机场流量监控";
-    const subtitle = `${name} · 已用 ${data.percent.toFixed(2)}%`;
 
     const lines = [
+      `${name} · 已用 ${data.percent.toFixed(2)}%`,
       `已用：${formatBytes(data.used)} / ${formatBytes(data.total)}`,
       `剩余：${formatBytes(data.remaining)}`,
       `上传：${formatBytes(data.upload)}`,
@@ -236,9 +233,12 @@ if (!url || !/^https?:\/\//i.test(url)) {
       percent: data.percent,
       expire: data.expire,
       checkedAt: Date.now(),
+      summary: lines.join("\n"),
+      warning: isTrafficWarning || isExpireWarning,
     });
 
-    post(title, subtitle, lines.join("\n"));
+    $persistentStore.write(lines.join("\n"), `${key}:summary`);
+    log(lines.join(" | "));
     finish();
   });
 }
