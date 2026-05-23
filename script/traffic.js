@@ -1,11 +1,11 @@
 /*
  * Surge airport traffic monitor.
  *
- * Surge iOS script example:
- * traffic = type=generic,timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/traffic.js,script-update-interval=86400,argument=name=MyAirport;url=https://example.com/sub?token=xxx;warn=80;expire=7
+ * Surge panel module:
+ * https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/traffic.sgmodule
  *
  * Recommended argument format:
- * name=MyAirport;url=https://example.com/sub?token=xxx;warn=80;expire=7;policy=DIRECT
+ * name=MyAirport;url=https%3A%2F%2Fexample.com%2Fsub%3Ftoken%3Dxxx;warn=80;expire=7;icon=externaldrive.fill.badge.icloud;color=#FFB6C1
  *
  * Required:
  * - url: Surge subscription URL
@@ -14,10 +14,12 @@
  * - name: display name, default "Airport"
  * - warn: traffic usage warning percent, default 80
  * - expire: expiration warning days, default 7
+ * - icon: panel SF Symbol name, default externaldrive.fill.badge.icloud
+ * - color: panel icon HEX color, default #FFB6C1
  * - policy: policy used for the HTTP request, default empty
  *
- * This script does not post notifications. It stores the latest result in
- * $persistentStore and prints a summary to the Surge script log.
+ * This script does not post notifications. It returns Surge panel data and
+ * stores the latest result in $persistentStore.
  */
 
 const DEFAULTS = {
@@ -25,10 +27,13 @@ const DEFAULTS = {
   warn: 80,
   expire: 7,
   timeout: 15,
+  icon: "externaldrive.fill.badge.icloud",
+  color: "#FFB6C1",
+  warningColor: "#FF3B30",
 };
 
-function finish() {
-  if (typeof $done === "function") $done();
+function finish(panel) {
+  if (typeof $done === "function") $done(panel || {});
 }
 
 function parseArgument(argument) {
@@ -68,6 +73,11 @@ function normalizeHeaders(headers) {
     result[key.toLowerCase()] = headers[key];
     return result;
   }, {});
+}
+
+function getHeader(headers, name) {
+  const normalized = normalizeHeaders(headers);
+  return normalized[String(name).toLowerCase()];
 }
 
 function parseUserInfo(header) {
@@ -129,6 +139,12 @@ function daysUntil(seconds) {
   return Math.ceil((seconds * 1000 - Date.now()) / 86400000);
 }
 
+function formatTime(date) {
+  const hour = String(date.getHours()).padStart(2, "0");
+  const minute = String(date.getMinutes()).padStart(2, "0");
+  return `${hour}:${minute}`;
+}
+
 function hash(input) {
   const text = String(input || "");
   let value = 2166136261;
@@ -158,17 +174,26 @@ function log(message) {
   console.log(`[AirportTraffic] ${message}`);
 }
 
+function panel(title, content, icon, color) {
+  return {
+    title,
+    content,
+    icon: icon || DEFAULTS.icon,
+    "icon-color": color || DEFAULTS.color,
+  };
+}
+
 const args = parseArgument(typeof $argument === "string" ? $argument : "");
 const name = decodeValue(args.name || DEFAULTS.name);
 const url = decodeValue(args.url || args.subscribe || args.subscription || "");
 const warnPercent = Number(args.warn || DEFAULTS.warn);
 const expireWarnDays = Number(args.expire || DEFAULTS.expire);
+const icon = decodeValue(args.icon || DEFAULTS.icon);
+const normalColor = decodeValue(args.color || DEFAULTS.color);
+const warningColor = decodeValue(args.warningColor || args.warning_color || DEFAULTS.warningColor);
 const policy = decodeValue(args.policy || "");
 
-if (!url || !/^https?:\/\//i.test(url)) {
-  log(`${name} 配置错误：请在 argument 里填写 url，例如 name=我的机场;url=https://example.com/sub;warn=80;expire=7`);
-  finish();
-} else {
+function buildRequest() {
   const request = {
     url,
     timeout: Number(args.timeout || DEFAULTS.timeout),
@@ -179,21 +204,51 @@ if (!url || !/^https?:\/\//i.test(url)) {
   };
 
   if (policy) request.policy = policy;
+  return request;
+}
 
-  $httpClient.get(request, (error, response) => {
+function requestUserInfo(method, callback) {
+  const clientMethod = typeof $httpClient[method] === "function" ? method : "get";
+  $httpClient[clientMethod](buildRequest(), (error, response) => {
     if (error) {
-      log(`${name} 获取失败：${String(error)}`);
-      finish();
+      callback(error);
       return;
     }
 
-    const status = response && response.status;
-    const headers = normalizeHeaders((response && response.headers) || {});
-    const userInfo = headers["subscription-userinfo"];
-
+    const headers = (response && response.headers) || {};
+    const userInfo = getHeader(headers, "subscription-userinfo");
     if (!userInfo) {
-      log(`${name} 获取失败：订阅响应没有 subscription-userinfo 头。HTTP 状态：${status || "Unknown"}`);
-      finish();
+      callback(new Error(`订阅响应没有 subscription-userinfo 头。HTTP 状态：${(response && response.status) || "Unknown"}`));
+      return;
+    }
+
+    callback(null, userInfo);
+  });
+}
+
+function loadUserInfo(callback) {
+  requestUserInfo(args.method || "head", (headError, headUserInfo) => {
+    if (!headError && headUserInfo) {
+      callback(null, headUserInfo);
+      return;
+    }
+
+    requestUserInfo("get", (getError, getUserInfo) => {
+      callback(getError || headError, getUserInfo);
+    });
+  });
+}
+
+if (!url || !/^https?:\/\//i.test(url)) {
+  const message = "请在模块参数 URL 中填写编码后的机场订阅地址";
+  log(`${name} 配置错误：${message}`);
+  finish(panel(name, message, "exclamationmark.triangle.fill", warningColor));
+} else {
+  loadUserInfo((error, userInfo) => {
+    if (error) {
+      const message = String(error && error.message ? error.message : error);
+      log(`${name} 获取失败：${message}`);
+      finish(panel(name, message, "exclamationmark.triangle.fill", warningColor));
       return;
     }
 
@@ -204,9 +259,10 @@ if (!url || !/^https?:\/\//i.test(url)) {
     const expireDays = daysUntil(data.expire);
     const isTrafficWarning = data.total > 0 && data.percent >= warnPercent;
     const isExpireWarning = expireDays !== null && expireDays <= expireWarnDays;
+    const hasWarning = isTrafficWarning || isExpireWarning;
+    const checkedAt = Date.now();
 
     const lines = [
-      `${name} · 已用 ${data.percent.toFixed(2)}%`,
       `已用：${formatBytes(data.used)} / ${formatBytes(data.total)}`,
       `剩余：${formatBytes(data.remaining)}`,
       `上传：${formatBytes(data.upload)}`,
@@ -226,19 +282,28 @@ if (!url || !/^https?:\/\//i.test(url)) {
       lines.push(`到期提醒：剩余天数不超过 ${expireWarnDays} 天`);
     }
 
+    lines.push(`更新：${formatTime(new Date(checkedAt))}`);
+
     saveCurrent(key, {
       used: data.used,
       total: data.total,
       remaining: data.remaining,
       percent: data.percent,
       expire: data.expire,
-      checkedAt: Date.now(),
+      checkedAt,
       summary: lines.join("\n"),
-      warning: isTrafficWarning || isExpireWarning,
+      warning: hasWarning,
     });
 
     $persistentStore.write(lines.join("\n"), `${key}:summary`);
-    log(lines.join(" | "));
-    finish();
+    log(`${name} · 已用 ${data.percent.toFixed(2)}% | ${lines.join(" | ")}`);
+    finish(
+      panel(
+        `${name} · ${data.percent.toFixed(2)}%`,
+        lines.join("\n"),
+        icon,
+        hasWarning ? warningColor : normalColor
+      )
+    );
   });
 }

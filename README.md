@@ -8,8 +8,8 @@ Personal Surge rules and profile.
 - `rule/DNSDirect.list`: Optional domestic encrypted DNS endpoints.
 - `rule/DNSProxy.list`: Optional overseas encrypted DNS endpoints and encrypted DNS protocols.
 - `rule/DomesticCustom.list`: Custom domestic services routed directly.
-- `script/traffic.js`: Surge generic script for airport subscription traffic monitoring.
-- `module/traffic.sgmodule`: Remote-importable Surge iOS module for the traffic monitor script.
+- `script/traffic.js`: Surge panel script for airport subscription traffic monitoring.
+- `module/traffic.sgmodule`: Remote-importable Surge iOS panel module for the traffic monitor script.
 - `icon/*.png`: Policy group icon assets.
 
 ## Raw URLs
