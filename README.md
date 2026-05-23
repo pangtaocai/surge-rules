@@ -9,6 +9,7 @@ Personal Surge rules and profile.
 - `rule/DNSProxy.list`: Optional overseas encrypted DNS endpoints and encrypted DNS protocols.
 - `rule/DomesticCustom.list`: Custom domestic services routed directly.
 - `script/traffic.js`: Surge generic script for airport subscription traffic monitoring.
+- `module/traffic.sgmodule`: Remote-importable Surge iOS module for the traffic monitor script.
 - `icon/*.png`: Policy group icon assets.
 
 ## Raw URLs
@@ -18,7 +19,7 @@ RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/Do
 ```
 
 ```conf
-traffic = type=generic,timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/traffic.js,script-update-interval=86400,argument=name=我的机场;url=你的机场订阅地址;warn=80;expire=7
+https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/traffic.sgmodule
 ```
 
 ## Icon Sources

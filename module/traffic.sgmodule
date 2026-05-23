@@ -1,0 +1,7 @@
+#!name=Traffic Monitor
+#!desc=Manual airport subscription traffic monitor for Surge iOS. Fill in SUB_URL locally after importing.
+#!arguments=NAME=我的机场&SUB_URL=https://example.com/your-surge-subscription.conf&WARN=80&EXPIRE=7
+#!requirement=SYSTEM = 'iOS'
+
+[Script]
+traffic = type=generic,timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/traffic.js,script-update-interval=86400,argument=name=%NAME%;url=%SUB_URL%;warn=%WARN%;expire=%EXPIRE%
