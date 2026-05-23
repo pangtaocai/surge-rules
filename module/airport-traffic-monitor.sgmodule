@@ -1,7 +1,0 @@
-#!name=Airport Traffic Monitor
-#!desc=Monitor airport subscription traffic usage on Surge iOS without notifications. Fill in AIRPORT_URL locally after importing.
-#!arguments=AIRPORT_NAME=我的机场&AIRPORT_URL=https://example.com/your-surge-subscription.conf&WARN_PERCENT=80&EXPIRE_DAYS=7
-#!requirement=SYSTEM = 'iOS'
-
-[Script]
-机场流量监控 = type=cron,cronexp="0 9 * * *",timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/airport-traffic-monitor.js,script-update-interval=86400,argument=name=%AIRPORT_NAME%;url=%AIRPORT_URL%;warn=%WARN_PERCENT%;expire=%EXPIRE_DAYS%
