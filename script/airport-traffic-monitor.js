@@ -2,7 +2,7 @@
  * Surge airport traffic monitor.
  *
  * Surge iOS script example:
- * 机场流量监控 = type=cron,cronexp="0 9 * * *",timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/airport-traffic-monitor.js,script-update-interval=86400,argument=name=MyAirport;url=https://example.com/sub?token=xxx;warn=80;expire=7
+ * airport_traffic_monitor = type=cron,cronexp="0 9 * * *",timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/airport-traffic-monitor.js,script-update-interval=86400,argument=name=MyAirport;url=https://example.com/sub?token=xxx;warn=80;expire=7
  *
  * Recommended argument format:
  * name=MyAirport;url=https://example.com/sub?token=xxx;warn=80;expire=7;policy=DIRECT

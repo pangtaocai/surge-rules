@@ -18,7 +18,7 @@ RULE-SET,https://raw.githubusercontent.com/pangtaocai/surge-rules/master/rule/Do
 ```
 
 ```conf
-机场流量监控 = type=cron,cronexp="0 9 * * *",timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/airport-traffic-monitor.js,script-update-interval=86400,argument=name=我的机场;url=你的机场订阅地址;warn=80;expire=7
+airport_traffic_monitor = type=cron,cronexp="0 9 * * *",timeout=30,debug=true,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/airport-traffic-monitor.js,script-update-interval=86400,argument=name=我的机场;url=你的机场订阅地址;warn=80;expire=7
 ```
 
 ## Icon Sources
