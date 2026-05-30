@@ -4,7 +4,7 @@
 #!arguments=NAME:网络诊断雷达,GROUP:代理策略,POLICY:,ICON:waveform.path.ecg,COLOR:#5E8DEE
 #!arguments-desc=[参数设置]\n\n⓵ NAME: 面板名字,默认网络诊断雷达。\n\n⓶ GROUP: Surge策略组名称,例如代理策略、节点选择、Proxy。\n\n⓷ POLICY: 可选,强制指定一个策略或节点名；留空时脚本会尝试读取GROUP当前选中的策略。\n\n⓸ ICON: 自定义面板图标,需为有效的SFSymbolName,如不设置则默认。\n\n⓹ COLOR: 自定义图标颜色,需为颜色的HEX编码,如不设置则默认为"#5E8DEE"。
 # 更新日期：2026.05.30
-# 版本：1.0
+# 版本：1.1
 
 [Panel]
 {{{NAME}}}=script-name={{{NAME}}},update-interval=300

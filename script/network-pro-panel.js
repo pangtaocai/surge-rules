@@ -16,6 +16,15 @@ const DEFAULTS = {
   color: "#5E8DEE",
 };
 
+const FALLBACK_GROUPS = [
+  "代理策略",
+  "节点选择",
+  "手动选择",
+  "🚀 节点选择",
+  "Proxy",
+  "GLOBAL",
+];
+
 const BASE_UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36";
 const COMMON_HEADERS = {
@@ -142,15 +151,34 @@ function readNetwork() {
   };
 }
 
+function unique(items) {
+  return items.filter((item, index) => item && items.indexOf(item) === index);
+}
+
+function candidateGroups(group) {
+  return unique([group].concat(FALLBACK_GROUPS));
+}
+
+function selectGroup(group) {
+  return httpAPI("GET", `/v1/policy_groups/select?group_name=${encodeURIComponent(group)}`, null).then((result) => {
+    const policy = result && (result.policy || result.selected || result.now);
+    if (!policy) throw new Error(`empty policy for ${group}`);
+    return { group, policy, routedBy: policy };
+  });
+}
+
+function trySelectGroups(groups, index) {
+  if (index >= groups.length) {
+    return Promise.reject(new Error("no available policy group"));
+  }
+
+  return selectGroup(groups[index]).catch(() => trySelectGroups(groups, index + 1));
+}
+
 function selectedPolicy(group, forcedPolicy) {
   if (forcedPolicy) return Promise.resolve({ group, policy: forcedPolicy, routedBy: forcedPolicy });
 
-  return httpAPI("GET", `/v1/policy_groups/select?group_name=${encodeURIComponent(group)}`, null)
-    .then((result) => {
-      const policy = result && (result.policy || result.selected || result.now);
-      return { group, policy: policy || group, routedBy: policy || group };
-    })
-    .catch(() => ({ group, policy: group, routedBy: group }));
+  return trySelectGroups(candidateGroups(group), 0).catch(() => ({ group, policy: group, routedBy: group }));
 }
 
 function withPolicy(policy, request) {
