@@ -6,7 +6,7 @@
 #!arguments-desc=[参数设置]\n\n⓵ GROUP: Surge 策略组名称，例如 代理策略、节点选择、Proxy。\n\n⓶ LABEL: 面板标题前缀，默认 代理策略。\n\n⓷ POLICY: 可选，强制指定一个策略或节点名；留空时脚本会尝试读取 GROUP 当前选中的策略。\n\n⓸ ICON: 面板图标，需为有效 SF Symbol 名称。\n\n⓹ COLOR: 面板图标颜色，需为 HEX 颜色。
 
 [Panel]
-代理策略=script-name=proxy-info-panel,update-interval=60
+代理策略=title="代理策略: Loading;",content="正在刷新 IP 信息...",style=info,script-name=proxy-info-panel,update-interval=60
 
 [Script]
 proxy-info-panel=type=generic,timeout=15,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/proxy-info-panel.js,script-update-interval=86400,argument=group={{{GROUP}}};label={{{LABEL}}};policy={{{POLICY}}};icon={{{ICON}}};color={{{COLOR}}}

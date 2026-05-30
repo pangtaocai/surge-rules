@@ -1,4 +1,4 @@
-#!name=Proxy Panel
+#!name=Proxy Panel v2
 #!desc=仿截图样式的 Surge iOS 代理信息面板，显示当前策略、本机 IP、落地 IP、位置、运营商和执行时间。
 #!system=ios
 #!category=Panel
