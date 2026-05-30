@@ -204,6 +204,12 @@ function value(input) {
   return input === undefined || input === null || input === "" ? "未知" : String(input);
 }
 
+function option(input, fallback) {
+  const text = String(input === undefined || input === null ? "" : input).trim();
+  if (!text || /^\{\{\{.+\}\}\}$/.test(text)) return fallback;
+  return text;
+}
+
 function formatTime(date) {
   const hour = String(date.getHours()).padStart(2, "0");
   const minute = String(date.getMinutes()).padStart(2, "0");
@@ -221,12 +227,12 @@ function panel(title, content) {
 }
 
 const args = parseArgument(typeof $argument === "string" ? $argument : "");
-const group = value(args.group || args.groupName || args.policyGroup || DEFAULTS.group);
-const label = value(args.label || group);
-const forcedPolicy = String(args.policy || "").trim();
-const icon = value(args.icon || DEFAULTS.icon);
-const color = value(args.color || DEFAULTS.color);
-const timeout = Number(args.timeout || DEFAULTS.timeout);
+const group = option(args.group || args.groupName || args.policyGroup, DEFAULTS.group);
+const label = option(args.label, group);
+const forcedPolicy = option(args.policy, "");
+const icon = option(args.icon, DEFAULTS.icon);
+const color = option(args.color, DEFAULTS.color);
+const timeout = Number(option(args.timeout, DEFAULTS.timeout));
 
 selectedPolicy(group, forcedPolicy)
   .then((selection) =>
