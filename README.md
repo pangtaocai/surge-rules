@@ -14,6 +14,8 @@ Personal Surge rules and profile.
 - `module/proxy-info-panel.sgmodule`: Remote-importable Surge iOS panel module for the proxy information panel.
 - `module/proxy-panel.sgmodule`: Short remote-importable alias for the proxy information panel.
 - `module/proxy-panel-v2.sgmodule`: Current proxy information panel module with static fallback title/content.
+- `module/proxy-info-fixed.sgmodule`: Conservative fixed proxy information panel module with no module placeholders.
+- `module/proxy-info-configurable.sgmodule`: Configurable proxy information panel module using Surge official `%KEY%` module variables.
 - `icon/*.png`: Policy group icon assets.
 
 ## Raw URLs
@@ -36,6 +38,14 @@ https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/proxy-pan
 
 ```conf
 https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/proxy-panel-v2.sgmodule
+```
+
+```conf
+https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/proxy-info-fixed.sgmodule
+```
+
+```conf
+https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/proxy-info-configurable.sgmodule
 ```
 
 Module arguments follow Surge's `KEY:Description` format. Encode the airport subscription URL before filling `URL`.

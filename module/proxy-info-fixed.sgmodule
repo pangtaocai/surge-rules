@@ -1,0 +1,10 @@
+#!name=面板-代理信息
+#!desc=仿截图样式显示当前策略、本机 IP、落地 IP、位置、运营商和执行时间。固定读取「代理策略」策略组。
+#!system=ios
+#!category=Panel
+
+[Panel]
+ProxyInfo = title="代理策略: Loading;", content="正在刷新 IP 信息...", style=info, script-name=proxy-info-panel, update-interval=60
+
+[Script]
+proxy-info-panel = type=generic, timeout=15, script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/proxy-info-panel.js, script-update-interval=86400, argument=group=代理策略&label=代理策略&policy=&icon=globe.asia.australia&color=#5E8DEE
