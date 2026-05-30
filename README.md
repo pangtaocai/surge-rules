@@ -12,6 +12,7 @@ Personal Surge rules and profile.
 - `module/traffic.sgmodule`: Remote-importable Surge iOS panel module for the traffic monitor script.
 - `script/proxy-info-panel.js`: Surge panel script for proxy/local IP and exit IP monitoring.
 - `module/proxy-info-panel.sgmodule`: Remote-importable Surge iOS panel module for the proxy information panel.
+- `module/proxy-panel.sgmodule`: Short remote-importable alias for the proxy information panel.
 - `icon/*.png`: Policy group icon assets.
 
 ## Raw URLs
@@ -26,6 +27,10 @@ https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/traffic.s
 
 ```conf
 https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/proxy-info-panel.sgmodule
+```
+
+```conf
+https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/proxy-panel.sgmodule
 ```
 
 Module arguments follow Surge's `KEY:Description` format. Encode the airport subscription URL before filling `URL`.
