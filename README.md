@@ -19,6 +19,7 @@ Personal Surge rules and profile.
 - `module/proxy-info-configurable.sgmodule`: Configurable proxy information panel module using Surge official `%KEY%` module variables.
 - `module/network-pro-panel.sgmodule`: Fixed Network-Pro diagnostic panel module.
 - `module/network-pro-panel-configurable.sgmodule`: Configurable Network-Pro diagnostic panel module using Surge official `%KEY%` module variables.
+- `module/network-pro-panel.official.sgmodule`: Network-Pro diagnostic panel module following the QingRex/LoonKissSurge official module placeholder style.
 - `icon/*.png`: Policy group icon assets.
 
 ## Raw URLs
@@ -57,6 +58,10 @@ https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/network-p
 
 ```conf
 https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/network-pro-panel-configurable.sgmodule
+```
+
+```conf
+https://raw.githubusercontent.com/pangtaocai/surge-rules/master/module/network-pro-panel.official.sgmodule
 ```
 
 Module arguments follow Surge's `KEY:Description` format. Encode the airport subscription URL before filling `URL`.
