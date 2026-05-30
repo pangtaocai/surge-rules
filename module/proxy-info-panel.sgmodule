@@ -1,0 +1,12 @@
+#!name=Proxy Info Panel
+#!desc=仿截图样式的 Surge iOS 代理信息面板，显示当前策略、本机 IP、落地 IP、位置、运营商和执行时间。
+#!system=ios
+#!category=Panel
+#!arguments=GROUP:代理策略,LABEL:代理策略,POLICY:,ICON:globe.asia.australia,COLOR:#5E8DEE
+#!arguments-desc=[参数设置]\n\n⓵ GROUP: Surge 策略组名称，例如 代理策略、节点选择、Proxy。\n\n⓶ LABEL: 面板标题前缀，默认 代理策略。\n\n⓷ POLICY: 可选，强制指定一个策略或节点名；留空时脚本会尝试读取 GROUP 当前选中的策略。\n\n⓸ ICON: 面板图标，需为有效 SF Symbol 名称。\n\n⓹ COLOR: 面板图标颜色，需为 HEX 颜色。
+
+[Panel]
+{{{LABEL}}}=script-name=proxy-info-panel,update-interval=60
+
+[Script]
+proxy-info-panel=type=generic,timeout=15,script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/proxy-info-panel.js,script-update-interval=86400,argument=group={{{GROUP}}};label={{{LABEL}}};policy={{{POLICY}}};icon={{{ICON}}};color={{{COLOR}}}
