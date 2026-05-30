@@ -7,4 +7,4 @@
 NetworkPro = title="网络诊断雷达", content="正在刷新网络诊断信息...", style=info, script-name=network-pro-panel, update-interval=300
 
 [Script]
-network-pro-panel = type=generic, timeout=30, script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/network-pro-panel.js, script-update-interval=86400, argument=group=代理策略&label=网络诊断雷达&policy=&icon=waveform.path.ecg&color=#5E8DEE
+network-pro-panel = type=generic, timeout=30, script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/network-pro-panel.js, script-update-interval=86400, argument=group=代理策略&label=网络诊断雷达&policy=&icon=waveform.path.ecg&color=%235E8DEE
