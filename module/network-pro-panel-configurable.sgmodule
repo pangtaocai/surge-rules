@@ -1,0 +1,11 @@
+#!name=面板-网络诊断雷达-可配置
+#!desc=由 Egern Network-Pro 小组件转换而来的 Surge 信息面板，参数使用 Surge 官方 %KEY% 模块变量格式。
+#!system=ios
+#!category=Panel
+#!arguments=GROUP=代理策略&LABEL=网络诊断雷达&POLICY=&ICON=waveform.path.ecg&COLOR=#5E8DEE
+
+[Panel]
+NetworkProConfigurable = title="网络诊断雷达", content="正在刷新网络诊断信息...", style=info, script-name=network-pro-panel-configurable, update-interval=300
+
+[Script]
+network-pro-panel-configurable = type=generic, timeout=30, script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/network-pro-panel.js, script-update-interval=86400, argument=group=%GROUP%&label=%LABEL%&policy=%POLICY%&icon=%ICON%&color=%COLOR%

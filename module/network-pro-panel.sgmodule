@@ -1,0 +1,10 @@
+#!name=面板-网络诊断雷达
+#!desc=由 Egern Network-Pro 小组件转换而来的 Surge 信息面板，展示本地网络、代理出口、纯净度、影视解锁、AI 解锁和延迟。
+#!system=ios
+#!category=Panel
+
+[Panel]
+NetworkPro = title="网络诊断雷达", content="正在刷新网络诊断信息...", style=info, script-name=network-pro-panel, update-interval=300
+
+[Script]
+network-pro-panel = type=generic, timeout=30, script-path=https://raw.githubusercontent.com/pangtaocai/surge-rules/master/script/network-pro-panel.js, script-update-interval=86400, argument=group=代理策略&label=网络诊断雷达&policy=&icon=waveform.path.ecg&color=#5E8DEE
